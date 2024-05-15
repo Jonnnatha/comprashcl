@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('solicitacoes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('setor_requerente_id');
+            $table->string('setor_requerente');
             $table->text('justificativa');
             // Itens e seus detalhes
             for ($i = 1; $i <= 6; $i++) {
@@ -33,13 +33,13 @@ return new class extends Migration
             $table->string('estado');
             $table->string('tipo');
             $table->string('prioridade');
+            $table->string('referencia');
             $table->date('indicadorcotaçao')->nullable();
             $table->date('indicadoraprovacao')->nullable();
             $table->date('indicadorconcluido')->nullable();
             $table->text('observacoescompras')->nullable();
             $table->timestamps();
 
-            $table->foreign('setor_requerente_id')->references('id')->on('setores');
         });
     }
 

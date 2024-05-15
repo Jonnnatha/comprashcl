@@ -55,7 +55,7 @@
                           <div class="numbers">
                             <p class="text-sm mb-0 text-uppercase font-weight-bold">ABERTA</p>
                             <h5 class="font-weight-bolder">
-
+                                {{ $solicitacoes['aguardando_aberta'] }}
                             </h5>
 
                           </div>
@@ -77,7 +77,7 @@
                           <div class="numbers">
                             <p class="text-sm mb-0 text-uppercase font-weight-bold">COTAÇÃO</p>
                             <h5 class="font-weight-bolder">
-
+                                {{ $solicitacoes['cotacao'] }}
                             </h5>
                           </div>
                         </div>
@@ -98,7 +98,7 @@
                           <div class="numbers">
                             <p class="text-sm mb-0 text-uppercase font-weight-bold">APROVAÇÃO</p>
                             <h5 class="font-weight-bolder">
-
+                                {{ $solicitacoes['aprovacao'] }}
                             </h5>
                           </div>
                         </div>
@@ -121,7 +121,7 @@
                           <div class="numbers">
                             <p class="text-sm mb-0 text-uppercase font-weight-bold">CONCLUIDAS</p>
                             <h5 class="font-weight-bolder">
-
+                                {{ $solicitacoes['concluida'] }}
                             </h5>
                           </div>
                         </div>
@@ -138,50 +138,171 @@
 
                 </div>
         </div>
+
         <div style="margin-top: 20px;">
             <div class="col-10 col-lg-20 m-auto">
-                <form class="needs-validation" action="" method="POST" novalidate>
+                <form class="needs-validation" action="{{ route('solicitacoes.store') }}" method="POST" novalidate>
                     @csrf
                     <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active"
                         data-animation="FadeIn">
-                        <h5 class="font-weight-bolder">Cadastro de Solicitação</h5>
+                        <h5 class="font-weight-bolder">CADASTRO DE SOLICITAÇÃO</h5>
                         @if (session('success'))
                             <div class="alert alert-success">
                                 {{ session('success') }}
                             </div>
                         @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger">
-                                {{ session('error') }}
-                            </div>
-                        @endif
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                         <div class="multisteps-form__content">
                             <div class="row mt-3">
                                 <div class="col-md-4 mb-3">
                                     <label class="form-control-label">Setor:</label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="hie">
-
+                                    <select class="form-control" id="exampleFormControlSelect1" name="setor_requerente">
+                                        @foreach ($setores as $setor)
+        <option value="{{ $setor->setor }}-{{$setor->cdc}}">{{ $setor->setor }}-{{$setor->cdc}}</option>
+    @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label class="form-control-label">Tipo:</label>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="tipo">
+                                        <option value="COTAÇÃO">COTAÇÃO</option>
+                                        <option value="COMPRA">COMPRA</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label class="form-control-label">Prioridade:</label>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="prioridade">
+                                        <option value="BAIXA">BAIXA</option>
+                                        <option value="MÉDIA">MÉDIA</option>
+                                        <option value="ALTA">ALTA</option>
+                                        <option value="MUITO ALTA">MUITO ALTA</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-control-label">Nome do Técnico:</label>
-                                    <input type="text" class="form-control" name="nome" id="validationCustomUsername"
-                                        placeholder="" aria-describedby="inputGroupPrepend" required>
-                                    <div class="invalid-feedback">
-                                        Informe o Técnico.
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-control-label" for="validationCustom04">Senha:</label>
-                                    <input type="text" class="form-control" name="senha" id="validationCustom05"
-                                        placeholder="" required>
-                                    <div class="invalid-feedback">
-                                        Informe a senha.
-                                    </div>
+                                    <label class="form-control-label">Referencia:</label>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="referencia">
+                                        @foreach ($refer as $re)
+        <option value="{{$re->codigo}}">{{ $re->referencia }}</option>
+    @endforeach
+                                    </select>
                                 </div>
                             </div>
+                            <div class="row mt-3">
+                                <div class="col-md-16 mb-3">
+                                    <label class="form-control-label">Justificativa:</label>
+                                    <textarea type="text" class="form-control" name="justificativa" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend" required></textarea>
+                                </div>
+                            </div>
+                            <h5 class="font-weight-bolder">-SERVICO</h5>
+								<div class="multisteps-form__content">
+									<div class="row mt-3">
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">1.Quant.:</label>
+											<input type="number" class="form-control" name="quantidade1" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend" required>
+										</div>
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">1.Und.:</label>
+											<input type="text" class="form-control" name="unidade1" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend" required>
+										</div>
+                                        <div class="col-md-10 mb-3">
+											<label class="form-control-label">1.Descrição:</label>
+											<input type="text" class="form-control" name="descricao1" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend" required>
+										</div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">2.Quant.:</label>
+											<input type="number" class="form-control" name="quantidade2" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">2.Und.:</label>
+											<input type="text" class="form-control" name="unidade2" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                        <div class="col-md-10 mb-3">
+											<label class="form-control-label">2.Descrição:</label>
+											<input type="text" class="form-control" name="descricao2" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">3.Quant.:</label>
+											<input type="number" class="form-control" name="quantidade3" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">3.Und.:</label>
+											<input type="text" class="form-control" name="unidade3" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                        <div class="col-md-10 mb-3">
+											<label class="form-control-label">3.Descrição:</label>
+											<input type="text" class="form-control" name="descricao3" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">4.Quant.:</label>
+											<input type="number" class="form-control" name="quantidade4" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">4.Und.:</label>
+											<input type="text" class="form-control" name="unidade4" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                        <div class="col-md-10 mb-3">
+											<label class="form-control-label">4.Descrição:</label>
+											<input type="text" class="form-control" name="descricao4" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">5.Quant.:</label>
+											<input type="number" class="form-control" name="quantidade5" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">5.Und.:</label>
+											<input type="text" class="form-control" name="unidade5" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                        <div class="col-md-10 mb-3">
+											<label class="form-control-label">5.Descrição:</label>
+											<input type="text" class="form-control" name="descricao5" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">6.Quant.:</label>
+											<input type="number" class="form-control" name="quantidade6" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                        <div class="col-md-1 mb-3">
+											<label class="form-control-label">6.Und.:</label>
+											<input type="text" class="form-control" name="unidade6" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                        <div class="col-md-10 mb-3">
+											<label class="form-control-label">6.Descrição:</label>
+											<input type="text" class="form-control" name="descricao6" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
+										</div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6 mb-3">
+											<label class="form-control-label">Fornecedor:</label>
+											<input type="text" class="form-control" name="fornecedor1" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend" required>
+										</div>
+                                        <div class="col-md-6">
+											<div class="form-group">
+												<label class="form-control-label" for="exampleDatepicker">Data Esperada:</label>
+												<input class="form-control datepicker" name="data_esperada" type="date" placeholder=""  required>
+											</div>
+										</div>
+                                    </div>
+                                </div>
+
                             <div class="button-row d-flex mt-4">
-                                <button class="btn bg-gradient-dark ms-auto mb-0" type="submit">Salvar</button>
+                                <button class="btn bg-gradient-success ms-auto mb-0" type="submit">Salvar</button>
                             </div>
                         </div>
                     </div>
@@ -190,41 +311,4 @@
         </div>
     </main>
 
-
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable({
-                renderer: {
-                    "pageButton": "bootstrap"
-                },
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
-                },
-                dom: 'Bfrtip',
-                buttons: [{
-                    extend: 'excel',
-                    title: 'Segurança'
-                }],
-                pageLength: 4,
-                responsive: true,
-
-            });
-        });
-
-        $(document).ready(function() {
-            $('#datatable-buttons2').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
-                },
-                dom: 'Bfrtip',
-                buttons: [{
-                    extend: 'excel',
-                    title: 'Emprestimo'
-                }],
-                pageLength: 4,
-                responsive: true,
-
-            });
-        });
-    </script>
 @endsection
