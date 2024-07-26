@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AlmoxController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ComprasController;
 use App\Http\Controllers\PDFController;
@@ -34,7 +35,9 @@ Route::middleware(['auth', 'checklevel:adm'])->group(function () {
     Route::get('/admin/cotacao/{id}', [AdminController::class, 'cotacao'])->name('adm.cotacao');
     Route::get('/admin/aprovacao/{id}', [AdminController::class, 'aprovacao'])->name('adm.aprovacao');
     Route::get('/admin/concluida/{id}', [AdminController::class, 'concluida'])->name('adm.concluida');
+    Route::get('/admin/almox/{id}', [AdminController::class, 'admalmox'])->name('adm.almox');
     Route::get('/admgerar-pdf/{id}', [AdminController::class, 'gerarpdf'])->name('admgerarpdf');
+    Route::get('/admin/indicadores', [AdminController::class, 'indicadores'])->name('admin.indicadores');
 
     ///////////////////REFERENCIA
     Route::get('/admin/referencia', [AdminController::class, 'referencia'])->name('admin.referencia');
@@ -60,6 +63,12 @@ Route::middleware(['auth', 'checklevel:adm'])->group(function () {
     Route::put('admin/updatecompras/{id}', [AdminController::class, 'updatecompras'])->name('compras.update');
     Route::delete('/compras/{id}', [AdminController::class, 'destroycompras'])->name('compras.destroy');
 
+    ///////////////////////////// ALMOX
+    Route::get('/admin/almox', [AdminController::class, 'almox'])->name('admin.almox');
+    Route::post('admin/storealmox', [AdminController::class, 'storealmox'])->name('almox.store');
+    Route::put('admin/updatealmox/{id}', [AdminController::class, 'updatealmox'])->name('almox.update');
+    Route::delete('/almox/{id}', [AdminController::class, 'destroyalmox'])->name('almox.destroy');
+
 
 
 });
@@ -84,8 +93,14 @@ Route::middleware(['auth', 'checklevel:compras'])->group(function () {
     Route::get('/solicitacoes/concluida/{id}', [ComprasController::class, 'concluida'])->name('solicitacoes.concluida');
     Route::put('/solicitacoes/desc/{id}', [ComprasController::class, 'desc'])->name('solicitacoes.desc');
     Route::put('/deletesoli/{id}', [ComprasController::class, 'deletesoli'])->name('deletesoli');
+    Route::get('/solicitacoes/almox/{id}', [ComprasController::class, 'comprasmox'])->name('compras.almox');
     Route::get('/gerar-pdf/{id}', [PDFController::class, 'gerarpdf'])->name('gerarpdf');
 });
 
+Route::middleware(['auth', 'checklevel:almox'])->group(function () {
+    Route::get('/dashboard-almox', [AlmoxController::class, 'index'])->name('almox.index');
+    Route::get('/almox/entregue/{id}', [AlmoxController::class, 'entregue'])->name('almox.entregue');
+    Route::get('/almox/dados', [AlmoxController::class, 'dados'])->name('almox.dados');
+});
 
 require __DIR__ . '/auth.php';

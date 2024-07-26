@@ -37,6 +37,8 @@ return new class extends Migration
             $table->date('indicadorcotaçao')->nullable();
             $table->date('indicadoraprovacao')->nullable();
             $table->date('indicadorconcluido')->nullable();
+            $table->date('indicadorentrega')->nullable();
+            $table->date('indicadorfinalizado')->nullable();
             $table->text('observacoescompras')->nullable();
             $table->timestamps();
 

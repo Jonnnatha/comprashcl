@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Hash;
 
+
 class AdminController extends Controller
 {
     public function index(){
@@ -30,6 +31,12 @@ class AdminController extends Controller
                 ->count(),
             'concluida' => DB::table('solicitacoes')
                 ->where('estado', 'concluida')
+                ->count(),
+            'almox' => DB::table('solicitacoes')
+                ->where('estado', 'almox')
+                ->count(),
+                'almox2' => DB::table('solicitacoes')
+                ->where('estado', 'almox2')
                 ->count(),
         ];
         return view('dashboard-adm.menu',['user' => $user, 'solicitacoes' => $solicitacoes, 'solici' => $solici]);
@@ -132,10 +139,25 @@ class AdminController extends Controller
             $solicitacao->estado = 'concluida';
             $solicitacao->indicadorconcluido = now();
             $solicitacao->save();
-            return redirect()->route('admin.tabela')->with('success', 'Solicitação atualizada para "concluida"!');
+            return redirect()->route('admin.tabela')->with('success', 'Solicitação atualizada para "autorizado"!');
         }
 
         return redirect()->route('admin.tabela')->with('error', 'Solicitação não está em estado "aberta"!');
+    }
+
+    public function admalmox($id)
+    {
+        $solicitacao = Solicitacao::findOrFail($id);
+
+        // Verificar se o estado atual é 'aguardando'
+        if ($solicitacao->estado == 'concluida') {
+            $solicitacao->estado = 'almox';
+            $solicitacao->indicadorentrega = now();
+            $solicitacao->save();
+            return redirect()->route('admin.tabela')->with('success', 'Solicitação atualizada para "Almoxarifado"!');
+        }
+
+        return redirect()->route('admin.tabela')->with('error', 'Solicitação não está em estado "autorizado"!');
     }
     //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -396,5 +418,180 @@ class AdminController extends Controller
         return redirect()->route('admin.compras')->with('success', 'Compras deletada com sucesso!');
 
     }
+    public function indicadores()
+    {
+        $user = Auth::user();
+        ////////////////////////////////// 1 indicador/////////
+        $solicitacoes = DB::table('solicitacoes')
+        ->select(DB::raw('referencia, COUNT(*) as quantidade'))
+        ->groupBy('referencia')
+        ->pluck('quantidade', 'referencia');
+        $referencias = Referencia::select('codigo', 'referencia')->get();
+        ///////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////// 2 indicador/////////////////////////////////////
+        $solicitantes = User::where('level', 'solicitante')->get(['nome', 'cargo']);
+        $solicitacoes2 = Solicitacao::select('solicitante', DB::raw('COUNT(*) as quantidade'))
+            ->groupBy('solicitante')
+            ->pluck('quantidade', 'solicitante');
+        ////////////////////////////////////////////////////////////////////////
+        $compradores = User::where('level', 'compras')->get(['nome', 'cargo']);
+
+        // Contar as solicitações por comprador (recebido_nome)
+        $solicitacoes3 = Solicitacao::select('recebido_nome', DB::raw('COUNT(*) as quantidade'))
+            ->groupBy('recebido_nome')
+            ->pluck('quantidade', 'recebido_nome');
+            ////////////////////////////////////////////////
+            //////////////////// 3 ndicador////////////////////
+            $solicitacoesPorMes = Solicitacao::select(
+                DB::raw('YEAR(created_at) as ano'),
+                DB::raw('MONTH(created_at) as mes'),
+                DB::raw('COUNT(*) as quantidade')
+            )
+            ->groupBy('ano', 'mes')
+            ->orderBy('ano', 'asc')
+            ->orderBy('mes', 'asc')
+            ->get();
+            ////////////////////////////
+
+            ////// 4 indicador/////////////////
+            $mediasPorComprador = Solicitacao::select('recebido_nome', DB::raw('AVG(DATEDIFF(indicadorconcluido, data_pedido)) as media_dias'))
+            ->whereNotNull('indicadorconcluido') // Garantir que indicadorconcluido não seja nulo
+            ->groupBy('recebido_nome')
+            ->pluck('media_dias', 'recebido_nome');
+            ///////////////////////////////////////////////////
+            ////////////////5 indicador///////////////////
+            $mediasPorComprador2 = Solicitacao::select('recebido_nome', DB::raw('AVG(DATEDIFF(indicadorconcluido, data_esperada)) as media_dias'))
+            ->whereNotNull('indicadorconcluido') // Garantir que indicadorconcluido não seja nulo
+            ->groupBy('recebido_nome')
+            ->pluck('media_dias', 'recebido_nome');
+            ///////////////////////////////////////
+            ////////////////// 6 indicador///////////////////
+            $mediasPorComprador3 = Solicitacao::select('recebido_nome',
+            DB::raw('AVG(DATEDIFF(recebido_data, data_pedido)) as media_recebido'),
+            DB::raw('AVG(DATEDIFF(indicadorcotaçao, recebido_data)) as media_cotacao'),
+            DB::raw('AVG(DATEDIFF(indicadoraprovacao, indicadorcotaçao)) as media_aprovacao'),
+            DB::raw('AVG(DATEDIFF(indicadorconcluido, indicadoraprovacao)) as media_concluida'),
+            DB::raw('AVG(DATEDIFF(indicadorentrega, indicadorfinalizado)) as media_entrega')
+
+        )
+        ->whereNotNull('recebido_data')
+        ->whereNotNull('indicadorcotaçao')
+        ->whereNotNull('indicadoraprovacao')
+        ->whereNotNull('indicadorconcluido')
+        ->whereNotNull('indicadorentrega')
+        ->whereNotNull('indicadorfinalizado')
+        ->groupBy('recebido_nome')
+        ->get();
+
+        $mediasPorComprador4 = Solicitacao::select('recebido_nome', DB::raw('AVG(DATEDIFF(indicadorentrega, indicadorfinalizado)) as media_dias'))
+        ->whereNotNull('indicadorentrega') // Garantir que indicadorconcluido não seja nulo
+        ->groupBy('recebido_nome')
+        ->pluck('media_dias', 'recebido_nome');
+        ////////////////////////////////////////////////////////
+
+        $solici = [
+            'aguardando_aberta' => DB::table('solicitacoes')
+                ->whereIn('estado', ['aguardando', 'aberta'])
+                ->count(),
+            'cotacao' => DB::table('solicitacoes')
+                ->where('estado', 'cotacao')
+                ->count(),
+            'aprovacao' => DB::table('solicitacoes')
+                ->where('estado', 'aprovacao')
+                ->count(),
+            'concluida' => DB::table('solicitacoes')
+                ->where('estado', 'concluida')
+                ->count(),
+                'almox' => DB::table('solicitacoes')
+                ->where('estado', 'almox')
+                ->count(),
+                'almox2' => DB::table('solicitacoes')
+                ->where('estado', 'almox2')
+                ->count(),
+        ];
+        return view('dashboard-adm.indicadores.indicadores',
+        ['user' => $user, 'solicitacoes' => $solicitacoes, 'solici' => $solici,
+        'referencias' => $referencias, 'solicitantes'=>$solicitantes,
+        'solicitacoes2' =>$solicitacoes2, 'compradores'=>$compradores,
+        'solicitacoes3'=> $solicitacoes3,'solicitacoesPorMes'=>$solicitacoesPorMes,
+        'mediasPorComprador'=>$mediasPorComprador,'mediasPorComprador2'=>$mediasPorComprador2,
+        'mediasPorComprador3'=>$mediasPorComprador3, 'mediasPorComprador4'=>$mediasPorComprador4]);
+
+
+    }
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+public function almox(){
+    $user = Auth::user();
+    $solicitante = User::where('level', 'almox')->get();
+
+
+    return view('dashboard-adm.almox.almox',['user' => $user, 'solicitante' => $solicitante]);
+
+}
+
+public function storealmox(Request $request)
+{
+    $request->validate([
+        'nome' => 'required|string|max:255',
+        'cargo' => 'required|string|max:255',
+        'senha' => 'required|string|max:255',
+    ]);
+
+    // Verifica se a referência ou o código já existe
+    $existingReferencia = User::where('nome', $request->nome)
+                                     ->first();
+    if ($existingReferencia) {
+        return redirect()->back()->with('error', 'Solicitante já cadastrado.');
+    }
+
+    $referencia = new User();
+    $referencia->nome = $request->nome;
+    $referencia->cargo = $request->cargo;
+    $referencia->senha =Hash::make($request->senha);
+    $referencia->level = 'almox';
+    $referencia->save();
+
+    return redirect()->route('admin.almox')->with('success', 'Almoxarifado adicionada com sucesso!');
+}
+
+public function destroyalmox($id)
+{
+    $referencia = User::findOrFail($id);
+    $referencia->delete();
+
+    return redirect()->route('admin.almox')->with('success', 'Almoxarifado deletada com sucesso!');
+
+}
+
+public function updatealmox(Request $request, $id)
+{
+
+    $request->validate([
+        'nome' => 'required|string|max:255',
+        'cargo' => 'required|string|max:255',
+  // A senha é opcional e deve ter no mínimo 8 caracteres se fornecida
+    ]);
+
+    $referencia = User::findOrFail($id);
+    $referencia->nome = $request->nome;
+    $referencia->cargo = $request->cargo;
+
+    if ($request->filled('senha')) {
+        $referencia->senha = Hash::make($request->senha);
+        // Atualiza a senha apenas se fornecida
+    }
+
+    $referencia->save();
+
+    return redirect()->route('admin.almox')->with('success', 'Almoxarifado atualizado com sucesso!');
+}
+
+////////////////////////////////////////////////////////////////////////
+
 }
 

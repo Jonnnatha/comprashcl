@@ -68,6 +68,7 @@
                                 <td style="font-weight: bold;">TIPO</td>
                                 <td style="font-weight: bold;">JUSTIFICATIVA</td>
                                 <td style="font-weight: bold;">DESCRIÇÃO</td>
+                                <td style="font-weight: bold;">MOTIVO</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,17 +79,23 @@
                                 </td>
                                 <td>
                                     @if ($li->estado == 'aguardando')
-                                        <p class="badge badge-sm bg-gradient-primary">{{ $li->estado }}</p>
+                                        <p class="badge badge-sm bg-gradient-light">{{ $li->estado }}</p>
                                     @elseif ($li->estado == 'aberta')
-                                        <p class="badge badge-sm bg-gradient-info">{{ $li->estado }}</p>
+                                        <p class="badge badge-sm bg-gradient-primary">{{ $li->estado }}</p>
                                     @elseif ($li->estado == 'cotacao')
                                         <p class="badge badge-sm bg-gradient-warning">{{ $li->estado }}</p>
                                     @elseif ($li->estado == 'aprovacao')
-                                        <p class="badge badge-sm bg-gradient-danger">{{ $li->estado }}</p>
-                                    @elseif ($li->estado == 'concluida')
-                                        <p class="badge badge-sm bg-gradient-success">{{ $li->estado }}</p>
-                                    @else
                                         <p class="badge badge-sm bg-gradient-secondary">{{ $li->estado }}</p>
+                                    @elseif ($li->estado == 'concluida')
+                                        <p class="badge badge-sm bg-gradient-info">AUTORIZADO</p>
+                                        @elseif ($li->estado == 'almox')
+                                        <p class="badge badge-sm bg-gradient-primary">AGUARD. ENTREGA</p>
+                                        @elseif ($li->estado == 'almox2')
+                                        <p class="badge badge-sm bg-gradient-success">CONCLUIDO</p>
+                                    @elseif ($li->estado == 'cancelado')
+                                    <p class="badge badge-sm bg-gradient-danger">{{ $li->estado }}</p>
+                                @else
+                                        <p class="badge badge-sm bg-gradient-dark">{{ $li->estado }}</p>
                                     @endif
                                 </td>
                                 <td>{{ $li->id }}</td>
@@ -99,6 +106,7 @@
                                 <td>{{ $li->tipo }}</td>
                                 <td>{{ $li->justificativa }}</td>
                                 <td>{{ $li->descricao1 }}</td>
+                                <td>{{ $li->observacoes }}</td>
                             </tr> <!-- Fecha a tag <tr> -->
                             @endforeach
                         </tbody>

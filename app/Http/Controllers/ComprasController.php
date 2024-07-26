@@ -29,6 +29,12 @@ class ComprasController extends Controller
             'concluida' => Solicitacao::where('estado', 'concluida')
                 ->whereIn('referencia', $referenciasIds)
                 ->count(),
+            'almox' => Solicitacao::where('estado', 'almox')
+                ->whereIn('referencia', $referenciasIds)
+                ->count(),
+            'almox2' => Solicitacao::where('estado', 'almox2')
+                ->whereIn('referencia', $referenciasIds)
+                ->count(),
         ];
 
         return view('dashboard-compras.menu', ['user' => $user, 'solicitacoes' => $solicitacoes, 'solici' => $solici]);
@@ -92,10 +98,24 @@ class ComprasController extends Controller
             $solicitacao->estado = 'concluida';
             $solicitacao->indicadorconcluido = now();
             $solicitacao->save();
-            return redirect()->route('compras.tabela')->with('success', 'Solicitação atualizada para "concluida"!');
+            return redirect()->route('compras.tabela')->with('success', 'Solicitação atualizada para "autorizado"!');
         }
 
         return redirect()->route('compras.tabela')->with('error', 'Solicitação não está em estado "aberta"!');
+    }
+    public function comprasmox($id)
+    {
+        $solicitacao = Solicitacao::findOrFail($id);
+
+        // Verificar se o estado atual é 'aguardando'
+        if ($solicitacao->estado == 'concluida') {
+            $solicitacao->estado = 'almox';
+            $solicitacao->indicadorentrega = now();
+            $solicitacao->save();
+            return redirect()->route('compras.tabela')->with('success', 'Solicitação atualizada para "Almoxarifado"!');
+        }
+
+        return redirect()->route('compras.tabela')->with('error', 'Solicitação não está em estado "autorizado"!');
     }
 
     public function dados()

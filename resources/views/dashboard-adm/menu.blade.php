@@ -47,11 +47,11 @@
 
         <div class="container-fluid py-4">
             <div class="row">
-                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
                     <div class="card">
                         <div class="card-body p-3">
                             <div class="row">
-                                <div class="col-8">
+                                <div class="col-6">
                                     <div class="numbers">
                                         <p class="text-sm mb-0 text-uppercase font-weight-bold">ABERTA</p>
                                         <h5 class="font-weight-bolder">
@@ -70,19 +70,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
                     <div class="card">
                         <div class="card-body p-3">
                             <div class="row">
-                                <div class="col-8">
+                                <div class="col-6">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">COTAÇÃO</p>
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">ORÇA.</p>
                                         <h5 class="font-weight-bolder">
                                             {{ $solici['cotacao'] }}
                                         </h5>
                                     </div>
                                 </div>
-                                <div class="col-4 text-end">
+                                <div class="col-2 text-end">
                                     <div
                                         class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
                                         <i class="fas fa-tags text-lg opacity-10" aria-hidden="true"></i>
@@ -92,13 +92,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
                     <div class="card">
                         <div class="card-body p-3">
                             <div class="row">
-                                <div class="col-8">
+                                <div class="col-6">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">APROVAÇÃO</p>
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">APROV.</p>
                                         <h5 class="font-weight-bolder">
                                             {{ $solici['aprovacao'] }}
                                         </h5>
@@ -116,13 +116,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-sm-6">
+                <div class="col-xl-2 col-sm-6">
                     <div class="card">
                         <div class="card-body p-3">
                             <div class="row">
-                                <div class="col-8">
+                                <div class="col-6">
                                     <div class="numbers">
-                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">CONCLUIDAS</p>
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">AUTORI.</p>
                                         <h5 class="font-weight-bolder">
                                             {{ $solici['concluida'] }}
                                         </h5>
@@ -130,8 +130,54 @@
                                 </div>
                                 <div class="col-4 text-end">
                                     <div
-                                        class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
+                                        class="icon icon-shape bg-gradient-info shadow-success text-center rounded-circle">
                                         <i class="fas fa-check text-lg opacity-10" aria-hidden="true"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-xl-2 col-sm-6">
+                    <div class="card">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="numbers">
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">ESPERA</p>
+                                        <h5 class="font-weight-bolder">
+                                            {{ $solici['almox'] }}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div
+                                        class="icon icon-shape bg-gradient-secondary shadow-success text-center rounded-circle">
+                                        <i class="fas fa-pause text-lg opacity-10" aria-hidden="true"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-sm-6">
+                    <div class="card">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="numbers">
+                                        <p class="text-sm mb-0 text-uppercase font-weight-bold">ENTREG.</p>
+                                        <h5 class="font-weight-bolder">
+                                            {{ $solici['almox2'] }}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div
+                                        class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
+                                        <i class="fas fa-truck-loading text-lg opacity-10" aria-hidden="true"></i>
                                     </div>
 
                                 </div>

@@ -34,6 +34,14 @@ class UsersTableSeeder extends Seeder
                 'cargo' => 'Aux. Compras',
                 'created_at' => now(),
                 'updated_at' => now()
+            ],
+            [
+                'nome' => 'heberth',
+                'senha' => Hash::make('123'),
+                'level' => 'almox',
+                'cargo' => 'Almoxarifado',
+                'created_at' => now(),
+                'updated_at' => now()
             ]
         ]);
     }

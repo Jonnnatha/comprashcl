@@ -235,7 +235,7 @@
                   <div class="col-lg-12 mb-2 mb-lg-0">
                   <div class="card z-index-2 h-100">
                   <div class="card-header d-flex align-items-center border-bottom py-3">
-                  <h4 class="text-capitalize"> <i class="fas fa-check text-lg opacity-10" aria-hidden="true"></i> CONCLUIDA</h4>
+                  <h4 class="text-capitalize"> <i class="fas fa-stamp text-lg opacity-10" aria-hidden="true"></i> AUTORIZADO</h4>
 
                           </div>
 
@@ -265,6 +265,7 @@
                                                 <a href="{{ route('gerarpdf', ['id' => $li->id]) }}" target="_blank" class="btn btn-youtube btn-icon-only rounded-sm">
                                                     <i class="fas fa-file-pdf"></i>
                                                 </a>
+                                                <a class="btn btn-slack btn-icon-only rounded-sm" href="{{ route('compras.almox', $li->id) }}"><i class="fas fa-share"></i></a>
 
 
                                             </td>
@@ -294,6 +295,196 @@
                   </div>
                   </div>
                         </div>
+                        <div class="container-fluid py-4">
+                            <div class="row" style="margin-top: 20px;">
+                      <div class="col-lg-12 mb-2 mb-lg-0">
+                      <div class="card z-index-2 h-100">
+                      <div class="card-header d-flex align-items-center border-bottom py-3">
+                      <h4 class="text-capitalize"> <i class="fas fa-truck-loading text-lg opacity-10" aria-hidden="true"></i> ALMOXARIFADO</h4>
+
+                              </div>
+
+
+                              <div class="card-body">
+                                <div class="table-responsive py-4">
+                                    <table class="table table-flush" id="datatable-buttons5">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <td style="font-weight: bold;">AÇÃO</td>
+                                                <td style="font-weight: bold;">CODIGO</td>
+                                                <td style="font-weight: bold;">SETOR REQUERENTE</td>
+                                                <td style="font-weight: bold;">DATA DO PEDIDO</td>
+                                                <td style="font-weight: bold;">DATA ESPERADA</td>
+                                                <td style="font-weight: bold;">PRIORIDADE</td>
+                                                <td style="font-weight: bold;">TIPO</td>
+                                                <td style="font-weight: bold;">JUSTIFICATIVA</td>
+                                                <td style="font-weight: bold;">DESCRIÇÃO</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($solicitacoes as $li)
+                                            @if ($li->estado == 'almox')
+                                            <tr> <!-- Adiciona a tag <tr> para iniciar uma nova linha da tabela -->
+                                                <td>
+
+                                                    <a href="{{ route('gerarpdf', ['id' => $li->id]) }}" target="_blank" class="btn btn-youtube btn-icon-only rounded-sm">
+                                                        <i class="fas fa-file-pdf"></i>
+                                                    </a>
+
+
+                                                </td>
+                                                <td>{{ $li->id }}</td>
+                                                <td>{{ $li->setor_requerente }}</td>
+                                                <td>{{ $li->data_pedido }}</td>
+                                                <td>{{ $li->data_esperada }}</td>
+                                                <td>{{ $li->prioridade }}</td>
+                                                <td>{{ $li->tipo }}</td>
+                                                <td>{{ $li->justificativa }}</td>
+                                                <td>{{ $li->descricao1 }}</td>
+                                            </tr> <!-- Fecha a tag <tr> -->
+                                                @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                                <div class="mb-1">
+
+                                  <hr />
+
+                                </div>
+                              </div>
+                            </div>
+                      </div>
+                      </div>
+                            </div>
+                            <div class="container-fluid py-4">
+                                <div class="row" style="margin-top: 20px;">
+                          <div class="col-lg-12 mb-2 mb-lg-0">
+                          <div class="card z-index-2 h-100">
+                          <div class="card-header d-flex align-items-center border-bottom py-3">
+                          <h4 class="text-capitalize"> <i class="fas fa-check text-lg opacity-10" aria-hidden="true"></i> FINALIZADO</h4>
+                                  </div>
+
+
+                                  <div class="card-body">
+                                    <div class="table-responsive py-4">
+                                        <table class="table table-flush" id="datatable-buttons6">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <td style="font-weight: bold;">AÇÃO</td>
+                                                    <td style="font-weight: bold;">CODIGO</td>
+                                                    <td style="font-weight: bold;">SETOR REQUERENTE</td>
+                                                    <td style="font-weight: bold;">DATA DO PEDIDO</td>
+                                                    <td style="font-weight: bold;">DATA ESPERADA</td>
+                                                    <td style="font-weight: bold;">PRIORIDADE</td>
+                                                    <td style="font-weight: bold;">TIPO</td>
+                                                    <td style="font-weight: bold;">JUSTIFICATIVA</td>
+                                                    <td style="font-weight: bold;">DESCRIÇÃO</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($solicitacoes as $li)
+                                                @if ($li->estado == 'almox2')
+                                                <tr> <!-- Adiciona a tag <tr> para iniciar uma nova linha da tabela -->
+                                                    <td>
+
+                                                        <a href="{{ route('gerarpdf', ['id' => $li->id]) }}" target="_blank" class="btn btn-youtube btn-icon-only rounded-sm">
+                                                            <i class="fas fa-file-pdf"></i>
+                                                        </a>
+
+
+                                                    </td>
+                                                    <td>{{ $li->id }}</td>
+                                                    <td>{{ $li->setor_requerente }}</td>
+                                                    <td>{{ $li->data_pedido }}</td>
+                                                    <td>{{ $li->data_esperada }}</td>
+                                                    <td>{{ $li->prioridade }}</td>
+                                                    <td>{{ $li->tipo }}</td>
+                                                    <td>{{ $li->justificativa }}</td>
+                                                    <td>{{ $li->descricao1 }}</td>
+                                                </tr> <!-- Fecha a tag <tr> -->
+                                                    @endif
+                                                @endforeach
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                    <div class="mb-1">
+
+                                      <hr />
+
+                                    </div>
+                                  </div>
+                                </div>
+                          </div>
+                          </div>
+                                </div>
+
+                                <div class="container-fluid py-4">
+                                    <div class="row" style="margin-top: 20px;">
+                              <div class="col-lg-12 mb-2 mb-lg-0">
+                              <div class="card z-index-2 h-100">
+                              <div class="card-header d-flex align-items-center border-bottom py-3">
+                              <h4 class="text-capitalize"> <i class="fas fa-window-close text-lg opacity-10" aria-hidden="true"></i> CANCELADO</h4>
+                                      </div>
+
+
+                                      <div class="card-body">
+                                        <div class="table-responsive py-4">
+                                            <table class="table table-flush" id="datatable-buttons7">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <td style="font-weight: bold;">AÇÃO</td>
+                                                        <td style="font-weight: bold;">CODIGO</td>
+                                                        <td style="font-weight: bold;">SETOR REQUERENTE</td>
+                                                        <td style="font-weight: bold;">DATA DO PEDIDO</td>
+                                                        <td style="font-weight: bold;">DATA ESPERADA</td>
+                                                        <td style="font-weight: bold;">PRIORIDADE</td>
+                                                        <td style="font-weight: bold;">TIPO</td>
+                                                        <td style="font-weight: bold;">JUSTIFICATIVA</td>
+                                                        <td style="font-weight: bold;">DESCRIÇÃO</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($solicitacoes as $li)
+                                                    @if ($li->estado == 'cancelado')
+                                                    <tr> <!-- Adiciona a tag <tr> para iniciar uma nova linha da tabela -->
+                                                        <td>
+
+                                                            <button class="btn btn-warning btn-icon-only rounded-sm" data-bs-toggle="modal" data-bs-target="#modal-default{{$li->id}}"><i class="fas fa-clipboard-check"></i></button>
+
+                                                        </td>
+                                                        <td>{{ $li->id }}</td>
+                                                        <td>{{ $li->setor_requerente }}</td>
+                                                        <td>{{ $li->data_pedido }}</td>
+                                                        <td>{{ $li->data_esperada }}</td>
+                                                        <td>{{ $li->prioridade }}</td>
+                                                        <td>{{ $li->tipo }}</td>
+                                                        <td>{{ $li->justificativa }}</td>
+                                                        <td>{{ $li->descricao1 }}</td>
+                                                    </tr> <!-- Fecha a tag <tr> -->
+                                                        @endif
+                                                    @endforeach
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                        <div class="mb-1">
+
+                                          <hr />
+
+                                        </div>
+                                      </div>
+                                    </div>
+                              </div>
+                              </div>
+                                    </div>
     </main>
 
     @foreach ($solicitacoes as $li)
@@ -486,6 +677,66 @@ $(document).ready(function () {
 });
 $(document).ready(function () {
   $('#datatable-buttons4').DataTable({
+          renderer: {
+      "pageButton": "bootstrap"
+  },
+          "language": {
+          "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
+      },
+          dom: 'Bfrtip',
+  buttons: [
+    {
+              extend: 'excel',
+              title: 'Solicitações'
+          }
+  ],
+          pageLength: 5,
+
+
+      });
+});
+$(document).ready(function () {
+  $('#datatable-buttons5').DataTable({
+          renderer: {
+      "pageButton": "bootstrap"
+  },
+          "language": {
+          "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
+      },
+          dom: 'Bfrtip',
+  buttons: [
+    {
+              extend: 'excel',
+              title: 'Solicitações'
+          }
+  ],
+          pageLength: 5,
+
+
+      });
+});
+$(document).ready(function () {
+  $('#datatable-buttons6').DataTable({
+          renderer: {
+      "pageButton": "bootstrap"
+  },
+          "language": {
+          "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
+      },
+          dom: 'Bfrtip',
+  buttons: [
+    {
+              extend: 'excel',
+              title: 'Solicitações'
+          }
+  ],
+          pageLength: 5,
+
+
+      });
+});
+$(document).ready(function () {
+  $('#datatable-buttons7').DataTable({
           renderer: {
       "pageButton": "bootstrap"
   },

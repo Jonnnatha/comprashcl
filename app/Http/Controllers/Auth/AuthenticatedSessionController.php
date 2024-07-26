@@ -28,6 +28,8 @@ class AuthenticatedSessionController extends Controller
                 return redirect('/dashboard-solicitante');
             } elseif (auth()->user()->level == 'compras') {
                 return redirect('/dashboard-compras');
+            }elseif (auth()->user()->level == 'almox') {
+                return redirect('/dashboard-almox');
             }
         } else {
             // Se o usuário não estiver autenticado, faça logout por segurança e redirecione para a tela de login

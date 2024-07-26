@@ -68,9 +68,23 @@
             <span class="sidenav-normal"> Compras </span>
             </a>
             </li>
+            <li class="nav-item ">
+                <a class="nav-link " href="{{ route('admin.almox') }}">
+                <span class="sidenav-mini-icon"> R </span>
+                <span class="sidenav-normal"> Almoxarifado </span>
+                </a>
+                </li>
             </ul>
             </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.indicadores') }}">
+                    <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                    <i class="fas fa-chart-pie text-warning text-sm opacity-10"></i>
+                  </div>
+                  <span class="nav-link-text ms-1">Indicadores</span>
+                </a>
+              </li>
 </ul>
 </div>
 

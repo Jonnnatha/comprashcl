@@ -32,6 +32,14 @@ class SolicitanteController extends Controller
                 ->where('estado', 'concluida')
                 ->where('solicitante', $user->nome)
                 ->count(),
+            'almox' => DB::table('solicitacoes')
+                ->where('estado', 'almox')
+                ->where('solicitante', $user->nome)
+                ->count(),
+            'almox2' => DB::table('solicitacoes')
+                ->where('estado', 'almox2')
+                ->where('solicitante', $user->nome)
+                ->count(),
         ];
         return view(
             'dashboard-solicitante.menu',

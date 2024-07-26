@@ -92,7 +92,6 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="//cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 
@@ -100,7 +99,7 @@
 
 <body class="g-sidenav-show   bg-gray-300">
 
-        @include('dashboard-adm.template.lista')
+        @include('dashboard-almox.template.lista')
 
 
     @yield('codigo')
