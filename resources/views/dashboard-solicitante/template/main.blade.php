@@ -21,7 +21,7 @@
     <link href="{{ asset('css/dashboard/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/dashboard/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/deb8d84b7a.js" crossorigin="anonymous"></script>
     <link href="{{ asset('css/dashboard/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('css/argon-dashboard.css?v=2.0.4') }}" rel="stylesheet" />
@@ -92,8 +92,11 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="//cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-
+<style>
+    .hidden {
+      display: none;
+    }
+  </style>
 
 </head>
 

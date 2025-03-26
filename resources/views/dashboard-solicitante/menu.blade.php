@@ -193,172 +193,207 @@
             <div class="col-10 col-lg-20 m-auto">
                 <form class="needs-validation" action="{{ route('solicitacoes.store') }}" method="POST" novalidate>
                     @csrf
-                    <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active"
-                        data-animation="FadeIn">
-                        <h5 class="font-weight-bolder">CADASTRO DE SOLICITAÇÃO</h5>
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-                        @if ($errors->any())
+                    <div class="card multisteps-form__panel p-3 border-radius-xl bg-white js-active" data-animation="FadeIn">
+                      <h5 class="font-weight-bolder">CADASTRO DE SOLICITAÇÃO</h5>
+                      
+                      <!-- Sessões de feedback -->
+                      @if (session('success'))
+                        <div class="alert alert-success">
+                          {{ session('success') }}
+                        </div>
+                      @endif
+                      @if ($errors->any())
                         <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                          <ul>
+                            @foreach ($errors->all() as $error)
+                              <li>{{ $error }}</li>
+                            @endforeach
+                          </ul>
                         </div>
-                    @endif
+                      @endif
+                      
+                      <!-- Campos de seleção e justificativa -->
+                      <div class="multisteps-form__content">
+                        <div class="row mt-3">
+                          <!-- Setor -->
+                          <div class="col-md-4 mb-3">
+                            <label class="form-control-label">Setor:</label>
+                            <select class="form-control" name="setor_requerente">
+                              @foreach ($setores as $setor)
+                                <option value="{{ $setor->setor }}-{{$setor->cdc}}">{{ $setor->setor }}-{{$setor->cdc}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <!-- Tipo -->
+                          <div class="col-md-2 mb-3">
+                            <label class="form-control-label">Tipo:</label>
+                            <select class="form-control" name="tipo">
+                              <option value="COTAÇÃO">COTAÇÃO</option>
+                              <option value="COMPRA">COMPRA</option>
+                            </select>
+                          </div>
+                          <!-- Prioridade -->
+                          <div class="col-md-2 mb-3">
+                            <label class="form-control-label">Prioridade:</label>
+                            <select class="form-control" name="prioridade">
+                              <option value="BAIXA">BAIXA</option>
+                              <option value="MÉDIA">MÉDIA</option>
+                              <option value="ALTA">ALTA</option>
+                              <option value="MUITO ALTA">MUITO ALTA</option>
+                            </select>
+                          </div>
+                          <!-- Referência -->
+                          <div class="col-md-4 mb-3">
+                            <label class="form-control-label">Referencia:</label>
+                            <select class="form-control" name="referencia">
+                              @foreach ($refer as $re)
+                                <option value="{{$re->codigo}}">{{ $re->referencia }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+              
+                        <!-- Justificativa -->
+                        <div class="row mt-3">
+                          <div class="col-md-12 mb-3">
+                            <label class="form-control-label">Justificativa:</label>
+                            <textarea class="form-control" name="justificativa" required></textarea>
+                          </div>
+                        </div>
+              
+                        <!-- Serviços (inicialmente mostrando a primeira linha) -->
+                        <h5 class="font-weight-bolder">- SERVIÇO</h5>
                         <div class="multisteps-form__content">
-                            <div class="row mt-3">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-control-label">Setor:</label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="setor_requerente">
-                                        @foreach ($setores as $setor)
-        <option value="{{ $setor->setor }}-{{$setor->cdc}}">{{ $setor->setor }}-{{$setor->cdc}}</option>
-    @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <label class="form-control-label">Tipo:</label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="tipo">
-                                        <option value="COTAÇÃO">COTAÇÃO</option>
-                                        <option value="COMPRA">COMPRA</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <label class="form-control-label">Prioridade:</label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="prioridade">
-                                        <option value="BAIXA">BAIXA</option>
-                                        <option value="MÉDIA">MÉDIA</option>
-                                        <option value="ALTA">ALTA</option>
-                                        <option value="MUITO ALTA">MUITO ALTA</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-control-label">Referencia:</label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="referencia">
-                                        @foreach ($refer as $re)
-        <option value="{{$re->codigo}}">{{ $re->referencia }}</option>
-    @endforeach
-                                    </select>
-                                </div>
+                          <!-- Primeira linha visível -->
+                          <div class="row mt-3">
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">1.Quant.:</label>
+                              <input type="number" class="form-control" name="quantidade1" required>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-md-16 mb-3">
-                                    <label class="form-control-label">Justificativa:</label>
-                                    <textarea type="text" class="form-control" name="justificativa" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend" required></textarea>
-                                </div>
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">1.Und.:</label>
+                              <input type="text" class="form-control" name="unidade1" required>
                             </div>
-                            <h5 class="font-weight-bolder">-SERVICO</h5>
-								<div class="multisteps-form__content">
-									<div class="row mt-3">
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">1.Quant.:</label>
-											<input type="number" class="form-control" name="quantidade1" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend" required>
-										</div>
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">1.Und.:</label>
-											<input type="text" class="form-control" name="unidade1" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend" required>
-										</div>
-                                        <div class="col-md-10 mb-3">
-											<label class="form-control-label">1.Descrição:</label>
-											<input type="text" class="form-control" name="descricao1" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend" required>
-										</div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">2.Quant.:</label>
-											<input type="number" class="form-control" name="quantidade2" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">2.Und.:</label>
-											<input type="text" class="form-control" name="unidade2" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                        <div class="col-md-10 mb-3">
-											<label class="form-control-label">2.Descrição:</label>
-											<input type="text" class="form-control" name="descricao2" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">3.Quant.:</label>
-											<input type="number" class="form-control" name="quantidade3" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">3.Und.:</label>
-											<input type="text" class="form-control" name="unidade3" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                        <div class="col-md-10 mb-3">
-											<label class="form-control-label">3.Descrição:</label>
-											<input type="text" class="form-control" name="descricao3" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">4.Quant.:</label>
-											<input type="number" class="form-control" name="quantidade4" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">4.Und.:</label>
-											<input type="text" class="form-control" name="unidade4" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                        <div class="col-md-10 mb-3">
-											<label class="form-control-label">4.Descrição:</label>
-											<input type="text" class="form-control" name="descricao4" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">5.Quant.:</label>
-											<input type="number" class="form-control" name="quantidade5" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">5.Und.:</label>
-											<input type="text" class="form-control" name="unidade5" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                        <div class="col-md-10 mb-3">
-											<label class="form-control-label">5.Descrição:</label>
-											<input type="text" class="form-control" name="descricao5" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">6.Quant.:</label>
-											<input type="number" class="form-control" name="quantidade6" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                        <div class="col-md-1 mb-3">
-											<label class="form-control-label">6.Und.:</label>
-											<input type="text" class="form-control" name="unidade6" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                        <div class="col-md-10 mb-3">
-											<label class="form-control-label">6.Descrição:</label>
-											<input type="text" class="form-control" name="descricao6" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend">
-										</div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-6 mb-3">
-											<label class="form-control-label">Fornecedor:</label>
-											<input type="text" class="form-control" name="fornecedor1" id="validationCustomUsername" placeholder="" aria-describedby="inputGroupPrepend" required>
-										</div>
-                                        <div class="col-md-6">
-											<div class="form-group">
-												<label class="form-control-label" for="exampleDatepicker">Data Esperada:</label>
-												<input class="form-control datepicker" name="data_esperada" type="date" placeholder=""  required>
-											</div>
-										</div>
-                                    </div>
-                                </div>
-
-                            <div class="button-row d-flex mt-4">
-                                <button class="btn bg-gradient-success ms-auto mb-0" type="submit">Salvar</button>
+                            <div class="col-md-10 mb-3">
+                              <label class="form-control-label">1.Descrição:</label>
+                              <input type="text" class="form-control" name="descricao1" required>
                             </div>
+                          </div>
+              
+                          <!-- Linhas ocultas inicialmente -->
+                          <div class="row mt-3 hidden">
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">2.Quant.:</label>
+                              <input type="number" class="form-control" name="quantidade2">
+                            </div>
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">2.Und.:</label>
+                              <input type="text" class="form-control" name="unidade2">
+                            </div>
+                            <div class="col-md-10 mb-3">
+                              <label class="form-control-label">2.Descrição:</label>
+                              <input type="text" class="form-control" name="descricao2">
+                            </div>
+                          </div>
+              
+                          <!-- Repetir para todas as 6 linhas -->
+                          <div class="row mt-3 hidden">
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">3.Quant.:</label>
+                              <input type="number" class="form-control" name="quantidade3">
+                            </div>
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">3.Und.:</label>
+                              <input type="text" class="form-control" name="unidade3">
+                            </div>
+                            <div class="col-md-10 mb-3">
+                              <label class="form-control-label">3.Descrição:</label>
+                              <input type="text" class="form-control" name="descricao3">
+                            </div>
+                          </div>
+                          <div class="row mt-3 hidden">
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">4.Quant.:</label>
+                              <input type="number" class="form-control" name="quantidade4">
+                            </div>
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">4.Und.:</label>
+                              <input type="text" class="form-control" name="unidade4">
+                            </div>
+                            <div class="col-md-10 mb-3">
+                              <label class="form-control-label">4.Descrição:</label>
+                              <input type="text" class="form-control" name="descricao4">
+                            </div>
+                          </div>
+                          <div class="row mt-3 hidden">
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">5.Quant.:</label>
+                              <input type="number" class="form-control" name="quantidade5">
+                            </div>
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">5.Und.:</label>
+                              <input type="text" class="form-control" name="unidade5">
+                            </div>
+                            <div class="col-md-10 mb-3">
+                              <label class="form-control-label">5.Descrição:</label>
+                              <input type="text" class="form-control" name="descricao5">
+                            </div>
+                          </div>
+                          <div class="row mt-3 hidden">
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">6.Quant.:</label>
+                              <input type="number" class="form-control" name="quantidade6">
+                            </div>
+                            <div class="col-md-1 mb-3">
+                              <label class="form-control-label">6.Und.:</label>
+                              <input type="text" class="form-control" name="unidade6">
+                            </div>
+                            <div class="col-md-10 mb-3">
+                              <label class="form-control-label">6.Descrição:</label>
+                              <input type="text" class="form-control" name="descricao6">
+                            </div>
+                          </div>
+              
+              
+                          <!-- Adicionar botão para exibir linhas -->
+                          <button id="addRowBtn" class="btn btn-primary mt-3" type="button">Adicionar Linha</button>
                         </div>
+              
+                        <!-- Informações adicionais -->
+                        <div class="row mt-3">
+                          <div class="col-md-6 mb-3">
+                            <label class="form-control-label">Fornecedor:</label>
+                            <input type="text" class="form-control" name="fornecedor1" required>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-control-label">Data Esperada:</label>
+                            <input class="form-control datepicker" name="data_esperada" type="date" required>
+                          </div>
+                        </div>
+              
+                        <!-- Botão de enviar -->
+                        <div class="button-row d-flex mt-4">
+                          <button class="btn bg-gradient-success ms-auto mb-0" type="submit">Salvar</button>
+                        </div>
+                      </div>
                     </div>
-                </form>
+                  </form>
             </div>
         </div>
     </main>
-
+    <script>
+        let currentRow = 1;
+        const maxRows = 6;
+        const rows = document.querySelectorAll('.multisteps-form__content .row.hidden'); // Seleciona apenas as linhas ocultas
+    
+        // Adicionando o evento para o botão "Adicionar Linha"
+        document.getElementById('addRowBtn').addEventListener('click', function() {
+          if (currentRow < maxRows && currentRow <= rows.length) {
+            rows[currentRow - 1].classList.remove('hidden'); // Mostra a próxima div
+            currentRow++;
+          } else {
+            alert('Você já atingiu o máximo de 6 linhas.');
+          }
+        });
+      </script>
 @endsection
